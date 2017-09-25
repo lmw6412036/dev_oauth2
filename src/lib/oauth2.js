@@ -1,8 +1,8 @@
 import {isBrower} from "./util"
 import http from "./http"
+import {fromCache, userCache} from "./cache";
 
-
-const APPID = "wx6e3551dee5f7e716";
+let APPID = "wx3d274480f31f6de2";
 const COMPONENT_APPID = "wxe24cab30ebb1e366";
 
 function getParams() {
@@ -13,13 +13,25 @@ function getParams() {
 }
 
 function getOpenidByCode(code, cb) {
-  http("", {code}).then((res) => {
-    cb();
-  })
+  http("smarthos.wechat.user.get.bycode", {code}).then((res) => {
+    if (res.code == 0 && res.obj) {
+      userCache.set(res.obj);
+      cb();
+    }
+    else {
+      let msg = `根据${code}未获得openid`;
+      alert(msg);
+      console.log(msg);
+    }
+  });
 }
 
 function initWeixin(cb) {
   let p = getParams();
+  if (!p.callback) {
+    p.callback = "https://www.baidu.com";
+  }
+  fromCache.set(p.callback);
   if (p.code) {
     getOpenidByCode(p.code, cb);
   } else {

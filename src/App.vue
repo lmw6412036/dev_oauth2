@@ -4,7 +4,7 @@
 </template>
 
 <script>
-  import http from "./lib/http"
+  import {fromCache, userCache} from "./lib/cache"
 
   export default {
     name: 'app',
@@ -13,16 +13,16 @@
         page: ""
       }
     },
-
     created() {
-//      http("smarthos.system.area.list", {}).then((res) => {
-//        console.log("111", res);
-//      });
+      this.goBack();
+    },
+    methods: {
+      goBack() {
+          
+      },
     },
 
-
-    watch: {
-    }
+    watch: {}
   }
 </script>
 

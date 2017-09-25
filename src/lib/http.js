@@ -1,8 +1,10 @@
 import axios from "axios";
 import config from "./config"
+import {makeRandom} from "./util"
 
 export default function (service, options, conf) {
   let baseParams = config.base_params;
+  baseParams.random = makeRandom(4);
   let data = {
     service,
     ...baseParams,
