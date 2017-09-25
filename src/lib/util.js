@@ -6,11 +6,11 @@ import config from "./config"
  * @returns {string}
  */
 export function makeRandom(length) {
-  let str = "0123456789", ret = "";
-  for (let i = 0; i < length; i++) {
-    ret += str.substr(Math.floor(Math.random() * str.length), 1);
-  }
-  return ret;
+    let str = "0123456789", ret = "";
+    for (let i = 0; i < length; i++) {
+        ret += str.substr(Math.floor(Math.random() * str.length), 1);
+    }
+    return ret;
 }
 
 /**
@@ -20,30 +20,8 @@ export function makeRandom(length) {
  * @returns {null}
  */
 export function arrayFind(array, fn) {
-  let index = array.findIndex(fn);
-  return index > -1 ? array[index] : null;
-}
-
-/**
- * 获得咨询状态
- * @param status
- * @returns {string}
- */
-export function getConsultStatusText(status) {
-  let c = arrayFind(config.consult_status, (res) => {
-    return res.status == status
-  });
-  return c ? c.name : "暂无";
-}
-
-/**
- * 获得订单状态
- * @param status
- */
-export function getBookOrderStatusText(status) {
-  return arrayFind(config.book_order_status, (res) => {
-    return res.status == status
-  }).name
+    let index = array.findIndex(fn);
+    return index > -1 ? array[index] : null;
 }
 
 /**
@@ -55,6 +33,25 @@ export function getBookOrderStatusText(status) {
  * @returns {boolean}
  */
 export function isBrower(name) {
-  let UA = window.navigator.userAgent.toLowerCase();
-  return UA.indexOf(name) > -1;
+    let UA = window.navigator.userAgent.toLowerCase();
+    return UA.indexOf(name) > -1;
+}
+
+/**
+ * 根据来源获得api_url
+ * @param callback
+ * @returns {string}
+ */
+export function getApiUrl(callback) {
+    let hostname = url("hostname", callback);
+    let api_url = "";
+    for (let key in config.api_url) {
+        if (hostname == key) {
+            api_url = config.api_url[key];
+        }
+    }
+    if (!api_url) {
+        api_url = config.api_url[Object.keys(config.api_url)[0]];
+    }
+    return api_url;
 }

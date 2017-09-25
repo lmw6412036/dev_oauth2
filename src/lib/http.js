@@ -13,10 +13,10 @@ export default function (service, options, conf) {
 
 
   let axiosConfig = {
-    url: data.mock ? "/api" : config.api_url,
+    url:'',
     method: "post",
     headers: {
-      "sign": "test",
+      "sign": "",
       "Content-Type": "application/json"
     },
     data: data

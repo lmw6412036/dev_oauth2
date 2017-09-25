@@ -1,4 +1,4 @@
-import {isBrower} from "./util"
+import {isBrower, getApiUrl} from "./util"
 import http from "./http"
 import {fromCache, userCache} from "./cache";
 
@@ -6,51 +6,56 @@ let APPID = "wx3d274480f31f6de2";
 const COMPONENT_APPID = "wxe24cab30ebb1e366";
 
 function getParams() {
-  let query = url("?");
-  let hash = url("#");
-  let params = Object.assign({}, query, hash);
-  return params;
+    let query = url("?");
+    let hash = url("#");
+    let params = Object.assign({}, query, hash);
+    return params;
 }
 
-function getOpenidByCode(code, cb) {
-  http("smarthos.wechat.user.get.bycode", {code}).then((res) => {
-    if (res.code == 0 && res.obj) {
-      userCache.set(res.obj);
-      cb();
-    }
-    else {
-      let msg = `根据${code}未获得openid`;
-      alert(msg);
-      console.log(msg);
-    }
-  });
+function getOpenidByCode(code, callback, cb) {
+    let url = getApiUrl(callback);
+    http("smarthos.wechat.user.get.bycode", {code}, {url}).then((res) => {
+        if (res.code == 0 && res.obj) {
+            userCache.set(res.obj);
+            cb();
+        }
+        else {
+            let msg = `根据${code}未获得openid`;
+            alert(msg);
+            console.log(msg);
+        }
+    });
 }
 
 function initWeixin(cb) {
-  let p = getParams();
-  if (!p.callback) {
-    p.callback = "https://www.baidu.com";
-  }
-  fromCache.set(p.callback);
-  if (p.code) {
-    getOpenidByCode(p.code, cb);
-  } else {
-    let href = location.href;
-    let redirect_uri = encodeURIComponent(href);
-    let jumpTo = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE&component_appid=${COMPONENT_APPID}#wechat_redirect`;
-    location.replace(jumpTo);
-  }
+    let p = getParams();
+    if (!p.callback) {
+        p.callback = "http://test-zheer-wx.hztywl.cn/gjhlwyy/index.html?v2#/";
+    }
+    fromCache.set(p.callback);
+    if (p.code) {
+        getOpenidByCode(p.code, p.callback, cb);
+    } else {
+        if (p.appid) {
+            APPID = p.appid;
+        }
+        let href = location.href;
+        let redirect_uri = encodeURIComponent(href);
+        let jumpTo = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE&component_appid=${COMPONENT_APPID}#wechat_redirect`;
+        location.replace(jumpTo);
+    }
 
 }
 
 export default (cb) => {
-  /*微信打开*/
-  if (isBrower("micromessenger")) {
-    initWeixin(cb);
-  }
-  /*非微信打开*/
-  else {
-    //getParams();
-    cb();
-  }
+    /*微信打开*/
+    if (isBrower("micromessenger")) {
+        initWeixin(cb);
+    }
+    /*非微信打开*/
+    else {
+        fromCache.set("http://test-zheer-wx.hztywl.cn/gjhlwyy/index.html?v2#/");
+        //getParams();
+        cb();
+    }
 }
