@@ -11,16 +11,17 @@ export default function (service, options, conf) {
     ...options
   };
 
+  let sign = hex_md5(hex_md5(config.password) + JSON.stringify(data));
 
   let axiosConfig = {
-    url:'',
     method: "post",
     headers: {
-      "sign": "",
+      "sign": sign,
       "Content-Type": "application/json"
     },
     data: data
   }
+
 
   if (conf) {
     axiosConfig = Object.assign({}, axiosConfig, conf);

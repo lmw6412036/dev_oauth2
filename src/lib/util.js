@@ -6,11 +6,11 @@ import config from "./config"
  * @returns {string}
  */
 export function makeRandom(length) {
-    let str = "0123456789", ret = "";
-    for (let i = 0; i < length; i++) {
-        ret += str.substr(Math.floor(Math.random() * str.length), 1);
-    }
-    return ret;
+  let str = "0123456789", ret = "";
+  for (let i = 0; i < length; i++) {
+    ret += str.substr(Math.floor(Math.random() * str.length), 1);
+  }
+  return ret;
 }
 
 /**
@@ -20,8 +20,8 @@ export function makeRandom(length) {
  * @returns {null}
  */
 export function arrayFind(array, fn) {
-    let index = array.findIndex(fn);
-    return index > -1 ? array[index] : null;
+  let index = array.findIndex(fn);
+  return index > -1 ? array[index] : null;
 }
 
 /**
@@ -33,8 +33,8 @@ export function arrayFind(array, fn) {
  * @returns {boolean}
  */
 export function isBrower(name) {
-    let UA = window.navigator.userAgent.toLowerCase();
-    return UA.indexOf(name) > -1;
+  let UA = window.navigator.userAgent.toLowerCase();
+  return UA.indexOf(name) > -1;
 }
 
 /**
@@ -43,15 +43,48 @@ export function isBrower(name) {
  * @returns {string}
  */
 export function getApiUrl(callback) {
-    let hostname = url("hostname", callback);
-    let api_url = "";
-    for (let key in config.api_url) {
-        if (hostname == key) {
-            api_url = config.api_url[key];
-        }
+  let hostname = url("hostname", callback);
+  let api_url = "";
+  for (let key in config.api_url) {
+    if (hostname == key) {
+      api_url = config.api_url[key];
     }
-    if (!api_url) {
-        api_url = config.api_url[Object.keys(config.api_url)[0]];
+  }
+  if (!api_url) {
+    api_url = config.api_url[Object.keys(config.api_url)[0]];
+  }
+  return api_url;
+}
+
+export function makeUrl(options) {
+  let url = "";
+  if (options.protocol) {
+    url += options.protocol + "://"
+  }
+  if (options.hostname) {
+    url += options.hostname
+  }
+  if (options.port && options.port != 80) {
+    url += ":" + options.port
+  }
+  if (options.path) {
+    url += options.path
+  }
+  if (options.query) {
+    let q = "";
+    for (let key in options.query) {
+      if (options.query[key]) {
+        q += `&${key}=${options.query[key]}`
+      } else {
+        q += `&${key}`
+      }
+
     }
-    return api_url;
+    q = q.substr(1);
+    url += "?" + q
+  }
+  if (options.hash) {
+    url += "#" + options.hash;
+  }
+  return url;
 }
