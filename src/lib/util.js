@@ -37,6 +37,21 @@ export function isBrower(name) {
   return UA.indexOf(name) > -1;
 }
 
+
+export function getAppid(callback) {
+  let hostname = url("hostname", callback);
+  let appid = "";
+  for (let key in config.appid) {
+    if (hostname == key) {
+      appid = config.appid[key];
+    }
+  }
+  if (!appid) {
+    appid = config.appid[Object.keys(config.appid)[0]];
+  }
+  return appid;
+}
+
 /**
  * 根据来源获得api_url
  * @param callback
@@ -56,6 +71,11 @@ export function getApiUrl(callback) {
   return api_url;
 }
 
+/**
+ * 生成跳转链接
+ * @param options
+ * @returns {string}
+ */
 export function makeUrl(options) {
   let url = "";
   if (options.protocol) {
@@ -87,4 +107,19 @@ export function makeUrl(options) {
     url += "#" + options.hash;
   }
   return url;
+}
+
+/**
+ * 解析url参数
+ * @param from
+ * @returns {{protocol: *, hostname: *, port: *, path: *, query: *, hash: *}}
+ */
+export function getParamsFromUrl(from) {
+  let protocol = url("protocol", from);
+  let hostname = url("hostname", from);
+  let port = url("port", from);
+  let path = url("path", from);
+  let query = url("?", from);
+  let hash = url("hash", from);
+  return {protocol, hostname, port, path, query, hash}
 }

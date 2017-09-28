@@ -5,7 +5,7 @@
 
 <script>
   import {fromCache, userCache} from "./lib/cache"
-  import {makeUrl} from "./lib/util"
+  import {makeUrl, getParamsFromUrl} from "./lib/util"
 
   export default {
     name: 'app',
@@ -20,20 +20,15 @@
     methods: {
       goBack() {
         let user = userCache.get();
-
         let from = fromCache.get();
-        let protocol = url("protocol", from);
-        let hostname = url("hostname", from);
-        let port = url("port", from);
-        let path = url("path", from);
-        let query = url("?", from);
-        let hash = url("hash", from);
-
+        let {protocol, hostname, port, path, query, hash} = getParamsFromUrl(from);
+        //console.log(getParamsFromUrl(from).hostname);
         if (typeof query == "undefined") {
           query = {};
         }
         query.openid = user.id;
         let retUrl = makeUrl({protocol, hostname, port, path, query, hash});
+        //console.log(retUrl)
         location.replace(retUrl);
       }
     },
