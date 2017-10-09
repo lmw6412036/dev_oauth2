@@ -6,7 +6,7 @@ export default {
     "nethosweb.diandianys.com": "//nethos.diandianys.com/api/app",
     "test-zheer-wx.hztywl.cn": "//nethos.diandianys.com/api/app",
     "pat-test.gjwlyy.com": "//api-test.gjwlyy.com/api/app",
-    "www.gjwlyy.com": "//api.gjwlyy.com/api/app"
+    "www.gjwlyy.com": "http://api.teyangsoft.com/?service=gjwlyy&action=index&sign=1ea3f0c0dd0c91ee54e546a99beafbfb"
   },
   appid: {
     "localhost": "wxa49f90b4ff678ef2",
