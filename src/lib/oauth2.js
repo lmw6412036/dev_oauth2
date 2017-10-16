@@ -3,6 +3,9 @@ import http from "./http"
 import {fromCache, userCache} from "./cache";
 
 let APPID = "wx3d274480f31f6de2";
+
+//wxb283692c5429f0e8 --pro
+//wxe24cab30ebb1e366 --dev
 let COMPONENT_APPID = "wxe24cab30ebb1e366";
 
 function getParams() {
@@ -40,7 +43,7 @@ function initWeixin(cb) {
   } else {
     APPID = getAppid(p.callback);
     if (p.appid) {
-      //APPID = p.appid;
+      APPID = p.appid;
     }
 
     if (p.callback.indexOf("www.gjwlyy.com") >= 0) {
@@ -53,6 +56,8 @@ function initWeixin(cb) {
     let jumpTo = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE&component_appid=${COMPONENT_APPID}#wechat_redirect`;
     location.replace(jumpTo);
   }
+
+  //https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7d475d39a1ea1aa9&redirect_uri=http%3a%2f%2ftest-wechat-repeater.hztywl.cn%2f&response_type=code&scope=snsapi_userinfo&state=STATE&component_appid=wxe24cab30ebb1e366#wechat_redirect
 
 }
 
