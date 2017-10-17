@@ -2,12 +2,14 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import VueCookies from "vue-cookies"
 
-import oauth2 from "./lib/oauth2"
+Vue.use(VueCookies);
 
 Vue.config.productionTip = false
 
-oauth2(init);
+//oauth2(init);
+init();
 
 function init() {
   /* eslint-disable no-new */

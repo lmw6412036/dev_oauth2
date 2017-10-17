@@ -5,7 +5,7 @@
 
 <script>
   import {fromCache, userCache} from "./lib/cache"
-  import {makeUrl, getParamsFromUrl} from "./lib/util"
+  import {makeUrl, getParamsFromUrl, isBrower} from "./lib/util"
 
   export default {
     name: 'app',
@@ -15,9 +15,26 @@
       }
     },
     created() {
-      this.goBack();
+      console.log(this.$cookies.keys(), this.$cookies.get("monitor_count"));
+      //微信打开
+      if (isBrower("micromessenger")) {
+        this.weixinInit();
+      } else {
+        //非微信打开
+      }
+
+      //this.goBack();
     },
     methods: {
+      weixinInit(){
+        if (this.$cookies.get("openid")) {
+
+        } else {
+
+        }
+      },
+
+
       goBack() {
         let user = userCache.get();
         let from = fromCache.get();
@@ -28,8 +45,9 @@
         }
         query.openid = user.id;
         let retUrl = makeUrl({protocol, hostname, port, path, query, hash});
-        //console.log(retUrl)
-        location.replace(retUrl);
+        console.log(this.$cookies.keys());
+        //alert(retUrl);
+        //location.replace(retUrl);
       }
     },
 

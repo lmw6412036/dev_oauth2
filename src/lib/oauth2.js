@@ -37,7 +37,6 @@ function initWeixin(cb) {
   } else {
     p.callback = decodeURIComponent(p.callback);
   }
-  fromCache.set(p.callback);
   if (p.code) {
     getOpenidByCode(p.code, p.callback, cb);
   } else {
